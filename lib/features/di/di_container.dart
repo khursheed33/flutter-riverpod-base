@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter_riverpod_base/core/notifications/app_awesome_notifications.dart';
 import 'package:flutter_riverpod_base/index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -24,6 +25,7 @@ Future<void> initializeDependencies() async {
   // Initializations::::::::::::::::::::::::::::::::::::
   preferences = await initializeSharedPreferences();
   await initializeHive();
+  await initializeAppAwesomeNotifications();
 
   // ------------------------------------------------------
   // Presentation state: Riverpod providers (see app/providers/app_providers.dart).

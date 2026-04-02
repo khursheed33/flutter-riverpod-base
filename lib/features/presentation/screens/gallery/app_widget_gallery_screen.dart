@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_base/core/constants/app_text.dart';
 import 'package:flutter_riverpod_base/core/design/design.dart';
+import 'package:flutter_riverpod_base/core/notifications/app_awesome_notifications.dart';
 import 'package:flutter_riverpod_base/features/presentation/home/app_route_paths.dart';
 import 'package:flutter_riverpod_base/features/presentation/widgets/app_title.dart';
 import 'package:go_router/go_router.dart';
@@ -92,6 +93,139 @@ class _AppWidgetGalleryScreenState extends ConsumerState<AppWidgetGalleryScreen>
               const AppLinearProgressBar(value: 0.65),
               const SizedBox(height: AppSpace.md),
               const Center(child: AppSpinner()),
+              const SizedBox(height: AppSpace.lg),
+              const AppSectionHeader(title: 'Notifications'),
+              AppTitle(
+                'Local / system notifications use [awesome_notifications] (instant + scheduled). '
+                'In-app messages use [AppSnack] + [ScaffoldMessenger] in this shell.',
+                variant: AppTitleVariant.body,
+                color: cs.onSurfaceVariant,
+              ),
+              const SizedBox(height: AppSpace.md),
+              AppTitle(
+                'Local & system tray (awesome_notifications)',
+                variant: AppTitleVariant.label,
+                color: cs.onSurfaceVariant,
+              ),
+              const SizedBox(height: AppSpace.sm),
+              if (!appAwesomeNotificationsSupported)
+                AppTitle(
+                  'Not available on web. Run on Android, iOS, or desktop.',
+                  variant: AppTitleVariant.body,
+                  color: cs.onSurfaceVariant,
+                )
+              else ...[
+                AppButton(
+                  label: 'Request notification permission',
+                  variant: AppButtonVariant.tonal,
+                  expandWidth: false,
+                  onPressed: () async {
+                    final ok = await requestAwesomeNotificationPermission();
+                    if (!context.mounted) return;
+                    if (ok) {
+                      AppSnack.show(context, 'Notification permission granted');
+                    } else {
+                      AppSnack.error(context, 'Permission denied or not granted.');
+                    }
+                  },
+                ),
+                const SizedBox(height: AppSpace.sm),
+                AppButton(
+                  label: 'Show instant notification',
+                  variant: AppButtonVariant.tonal,
+                  expandWidth: false,
+                  onPressed: () async {
+                    final ok = await showGalleryInstantNotification();
+                    if (!context.mounted) return;
+                    if (!ok) {
+                      AppSnack.error(
+                        context,
+                        'Could not show notification — check permission and platform support.',
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: AppSpace.sm),
+                AppButton(
+                  label: 'Schedule in 5 seconds',
+                  variant: AppButtonVariant.tonal,
+                  expandWidth: false,
+                  onPressed: () async {
+                    final ok = await scheduleGalleryNotification();
+                    if (!context.mounted) return;
+                    if (ok) {
+                      AppSnack.show(context, 'Scheduled — you can leave the app or stay in foreground.');
+                    } else {
+                      AppSnack.error(context, 'Schedule failed — check exact-alarm / notification settings.');
+                    }
+                  },
+                ),
+                const SizedBox(height: AppSpace.sm),
+                AppButton(
+                  label: 'Cancel pending scheduled demo',
+                  variant: AppButtonVariant.outlined,
+                  expandWidth: false,
+                  onPressed: () async {
+                    await cancelGalleryScheduledNotification();
+                    if (!context.mounted) return;
+                    AppSnack.show(context, 'Cancelled schedule for the gallery demo id');
+                  },
+                ),
+              ],
+              const SizedBox(height: AppSpace.md),
+              AppTitle(
+                'In-app (SnackBar / banner)',
+                variant: AppTitleVariant.label,
+                color: cs.onSurfaceVariant,
+              ),
+              const SizedBox(height: AppSpace.sm),
+              AppButton(
+                label: 'Show snack',
+                variant: AppButtonVariant.tonal,
+                expandWidth: false,
+                onPressed: () {
+                  AppSnack.show(context, 'Saved to drafts');
+                },
+              ),
+              const SizedBox(height: AppSpace.sm),
+              AppButton(
+                label: 'Snack with action',
+                variant: AppButtonVariant.tonal,
+                expandWidth: false,
+                onPressed: () {
+                  AppSnack.show(
+                    context,
+                    'Profile updated',
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: () {
+                        AppSnack.show(context, 'Undo tapped');
+                      },
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: AppSpace.sm),
+              AppButton(
+                label: 'Error snack',
+                variant: AppButtonVariant.outlined,
+                expandWidth: false,
+                onPressed: () {
+                  AppSnack.error(context, 'Something went wrong — try again.');
+                },
+              ),
+              const SizedBox(height: AppSpace.sm),
+              AppButton(
+                label: 'Material banner',
+                variant: AppButtonVariant.outlined,
+                expandWidth: false,
+                onPressed: () {
+                  AppSnack.banner(
+                    context,
+                    'New terms are available. This stays until dismissed.',
+                  );
+                },
+              ),
               const SizedBox(height: AppSpace.lg),
               const AppSectionHeader(title: 'Surfaces'),
               AppCard(
