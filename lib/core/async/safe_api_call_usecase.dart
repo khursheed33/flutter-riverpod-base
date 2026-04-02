@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// The `SafeApiCallUsecase` class is a wrapper that handles safe API calls by using the `SafeApiCall`
 /// class.

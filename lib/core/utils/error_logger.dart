@@ -1,4 +1,4 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// The function logs an error message and stack trace to a file.
 ///

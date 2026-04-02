@@ -1,10 +1,8 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_primary_fab.dart';
 
+@Deprecated('Use AppPrimaryFab')
 class AppNextButtonCircle extends StatelessWidget {
-  final Color? backgroundColor;
-  final Color? iconColor;
-  final Function()? onPressed;
-  final bool isBusy;
   const AppNextButtonCircle({
     super.key,
     this.backgroundColor,
@@ -13,15 +11,18 @@ class AppNextButtonCircle extends StatelessWidget {
     required this.onPressed,
   });
 
+  final Color? backgroundColor;
+  final Color? iconColor;
+  final bool isBusy;
+  final VoidCallback? onPressed;
+
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: Theme.of(context).primaryColor,
-      elevation: 0.0,
-      onPressed: isBusy ? null : onPressed,
-      child: isBusy
-          ? AppCircularProgress(color: Theme.of(context).canvasColor)
-          : Icon(Icons.arrow_forward, color: Theme.of(context).canvasColor),
+    return AppPrimaryFab(
+      onPressed: onPressed,
+      isBusy: isBusy,
+      backgroundColor: backgroundColor,
+      foregroundColor: iconColor,
     );
   }
 }

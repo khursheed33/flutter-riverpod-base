@@ -1,29 +1,30 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_title_banner.dart';
+import 'package:flutter_riverpod_base/features/presentation/widgets/app_title.dart';
 
+@Deprecated('Use AppTitleBanner')
 class AppTitleWithBG extends StatelessWidget {
+  const AppTitleWithBG({
+    super.key,
+    this.bgColor,
+    required this.title,
+    this.fontSize,
+    this.textAlign,
+  });
+
   final Color? bgColor;
   final String title;
   final double? fontSize;
   final AlignmentGeometry? textAlign;
-  const AppTitleWithBG({
-    super.key,
-    this.bgColor,
-    this.fontSize,
-    this.textAlign,
-    required this.title,
-  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
+    return AppTitleBanner(
+      title: title,
+      backgroundColor: bgColor,
       alignment: textAlign ?? Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      decoration: BoxDecoration(
-        color: bgColor ?? Theme.of(context).dividerColor,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: AppTitle(title),
+      titleVariant: AppTitleVariant.legacy,
+      fontSize: fontSize,
     );
   }
 }

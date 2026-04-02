@@ -1,4 +1,4 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// The `CreateUserParams` class extends the `UserEntity` class and requires specific parameters for
 /// creating a user.

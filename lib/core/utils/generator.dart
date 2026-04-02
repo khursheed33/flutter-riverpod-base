@@ -1,4 +1,4 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// The `Generate` class in Dart provides methods for generating unique IDs and random colors.
 class Generate {
@@ -37,6 +37,6 @@ class Generate {
   static Color color({double? opacity}) {
     return Color(
       (Random().nextDouble() * 0xFFFFFFFF).toInt(),
-    ).withOpacity(opacity ?? 1);
+    ).withValues(alpha: opacity ?? 1);
   }
 }

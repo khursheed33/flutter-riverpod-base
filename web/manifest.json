@@ -1,6 +1,6 @@
 {
-    "name": "flutter_provider_base",
-    "short_name": "flutter_provider_base",
+    "name": "flutter_riverpod_base",
+    "short_name": "flutter_riverpod_base",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

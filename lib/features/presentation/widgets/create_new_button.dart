@@ -1,7 +1,22 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_text_icon_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+@Deprecated('Use AppTextIconButton')
 class AppCreateNewButton extends StatelessWidget {
-  final Function()? onPressed;
+  const AppCreateNewButton({
+    super.key,
+    required this.onPressed,
+    this.title,
+    this.icon,
+    this.backgroundColor,
+    this.textColor,
+    this.fontSize,
+    this.fontWeight,
+    this.iconSize,
+  });
+
+  final VoidCallback? onPressed;
   final String? title;
   final IconData? icon;
   final Color? backgroundColor;
@@ -10,40 +25,19 @@ class AppCreateNewButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final double? iconSize;
 
-  const AppCreateNewButton({
-    super.key,
-    required this.onPressed,
-    this.title,
-    this.icon,
-    this.textColor,
-    this.backgroundColor,
-    this.fontSize,
-    this.fontWeight,
-    this.iconSize,
-  });
-
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      minWidth: 60,
-      color: backgroundColor ?? Theme.of(context).primaryColor,
-      textColor: textColor ?? Theme.of(context).canvasColor,
+    final base = Theme.of(context).textTheme.labelLarge;
+    return AppTextIconButton(
+      label: title ?? 'New',
       onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon ?? FontAwesomeIcons.circlePlus, size: iconSize ?? 20),
-          const SizedBox(width: 5),
-          AppTitle(
-            title ?? "New",
-            color: Theme.of(context).canvasColor,
-            textAlign: TextAlign.center,
-            fontSize: fontSize,
-            fontWeight: fontWeight,
-          ),
-        ],
-      ),
+      icon: icon ?? FontAwesomeIcons.circlePlus,
+      backgroundColor: backgroundColor,
+      foregroundColor: textColor,
+      iconSize: iconSize,
+      textStyle: (fontSize != null || fontWeight != null)
+          ? base?.copyWith(fontSize: fontSize, fontWeight: fontWeight)
+          : null,
     );
   }
 }

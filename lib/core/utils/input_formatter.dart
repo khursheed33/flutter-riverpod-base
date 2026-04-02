@@ -2,7 +2,7 @@
 /// for filtering input to allow text and numbers, numbers only, or text only.
 library;
 
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 class InputFormatter {
   static List<TextInputFormatter> textAndNumberOnly() {

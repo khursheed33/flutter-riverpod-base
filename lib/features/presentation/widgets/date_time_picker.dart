@@ -1,33 +1,17 @@
-import 'package:flutter_provider_base/index.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_date_picker_field.dart';
 
+@Deprecated('Use AppDatePickerField')
 class MMDateTimePicker extends StatelessWidget {
-  final Function(DateTime dateTime)? pickedDateHandler;
-  final Color? iconColor;
-  final double? iconSize;
-  final DateTime? endDate;
-  final DateTime? firstDate;
-  final DateTime? initialDate;
-  final DateTime selectedDate;
-  final double? titleSize;
-  final String? label;
-  final double? labelSize;
-  final Color? titleColor;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
-  final double? radius;
-  final String? dateFormat;
-  final Color? bgColor;
-
   const MMDateTimePicker({
     super.key,
-    required this.pickedDateHandler,
+    this.pickedDateHandler,
     required this.selectedDate,
     this.initialDate,
     this.firstDate,
+    this.endDate,
     this.iconColor,
     this.iconSize,
-    this.endDate,
     this.titleSize,
     this.label,
     this.labelSize,
@@ -39,54 +23,43 @@ class MMDateTimePicker extends StatelessWidget {
     this.dateFormat,
   });
 
+  final void Function(DateTime dateTime)? pickedDateHandler;
+  final DateTime selectedDate;
+  final DateTime? initialDate;
+  final DateTime? firstDate;
+  final DateTime? endDate;
+  final Color? iconColor;
+  final double? iconSize;
+  final double? titleSize;
+  final String? label;
+  final double? labelSize;
+  final Color? titleColor;
+  final Color? bgColor;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final double? radius;
+  final String? dateFormat;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (label != null) AppTitle(label!, fontSize: labelSize ?? 14),
-        const SizedBox(height: 5),
-        InkWell(
-          onTap: () async {
-            final DateTime? selectedDate = await showDatePicker(
-              context: context,
-              initialDate: initialDate ?? DateTime.now(),
-              firstDate: firstDate ?? DateTime.utc(1900),
-              lastDate: endDate ?? DateTime.now(),
-            );
-
-            if (selectedDate != null && selectedDate != DateTime.now()) {
-              pickedDateHandler!(selectedDate);
-            }
-          },
-          child: AppContainerWithBG(
-            padding: padding ?? const EdgeInsets.all(5.0),
-            radius: radius ?? 6,
-            margin: margin,
-            color: bgColor,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AppTitle(
-                  DateFormat(
-                    dateFormat ?? Constants.dateFormat,
-                  ).format(selectedDate),
-                  fontSize: titleSize ?? 16,
-                  fontWeight: FontWeight.bold,
-                  color: titleColor,
-                ),
-                const SizedBox(width: 5),
-                Icon(
-                  Icons.date_range,
-                  size: iconSize ?? 30,
-                  color: iconColor ?? Theme.of(context).primaryColor,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+    return AppDatePickerField(
+      selectedDate: selectedDate,
+      onDateSelected: pickedDateHandler,
+      initialPickerDate: initialDate,
+      firstDate: firstDate,
+      lastDate: endDate,
+      label: label,
+      labelFontSize: labelSize,
+      dateFormatPattern: dateFormat,
+      padding: padding,
+      margin: margin,
+      radius: radius,
+      surfaceColor: bgColor,
+      iconColor: iconColor,
+      iconSize: iconSize,
+      valueFontSize: titleSize,
+      valueFontWeight: FontWeight.bold,
+      valueColor: titleColor,
     );
   }
 }

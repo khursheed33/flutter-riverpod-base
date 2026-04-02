@@ -1,10 +1,1 @@
-import 'package:flutter_provider_base/index.dart';
-
-class AppLinearProgressBar extends StatelessWidget {
-  const AppLinearProgressBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const LinearProgressIndicator();
-  }
-}
+export 'package:flutter_riverpod_base/core/design/widgets/app_progress.dart';

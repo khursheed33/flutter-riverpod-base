@@ -1,6 +1,13 @@
-/// The class `AppRoutePaths` defines static string constants for different routes in an application.
+/// Path segments for [GoRouter] (path URLs work on web).
 abstract class AppRoutePaths {
-  static const String root = "/";
-  static const String home = "/home";
-  static const String authentication = "/authentication";
+  static const splash = '/splash';
+  static const login = '/login';
+  static const home = '/home';
+  static const homeGallery = '/home/gallery';
+  static const homeUsers = '/home/users';
+  static const homeUsersNew = '/home/users/new';
+
+  static String homeUser(String id) => '/home/users/$id';
+
+  static String homeUserEdit(String id) => '/home/users/$id/edit';
 }

@@ -1,4 +1,4 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 class AppColors {
   static const Color primaryColor = Color(0xFF007bff);

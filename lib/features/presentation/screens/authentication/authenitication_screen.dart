@@ -1,138 +1,86 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_base/features/presentation/providers/demo_session_provider.dart';
+import 'package:flutter_riverpod_base/features/presentation/providers/preferences_state_provider.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// Authentication Screen with Form and validation
-class AuthenticationScreen extends StatefulWidget {
+class AuthenticationScreen extends ConsumerWidget {
   const AuthenticationScreen({super.key});
 
   @override
-  State<AuthenticationScreen> createState() => _AuthenticationScreenState();
-}
-
-class _AuthenticationScreenState extends State<AuthenticationScreen> {
-  bool _isLoggedIn = false;
-
-  void _toggleLoginStatus() {
-    setState(() {
-      _isLoggedIn = !_isLoggedIn;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
+    final isBusy = ref.watch(
+      appPreferencesViewModelProvider.select((m) => m.state == ViewState.Loading),
+    );
+    final gradientColors = isDark
+        ? [scheme.surfaceContainerHighest, scheme.surface]
+        : [
+            scheme.primaryContainer.withValues(alpha: AppAlpha.overlaySubtle * 3.5),
+            scheme.surface,
+          ];
 
     return Scaffold(
-      body: Consumer<AppPreferencesViewModel>(
-        builder: (context, model, _) {
-          return Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: isDark
-                    ? [const Color(0xFF1E1E1E), const Color(0xFF121212)]
-                    : [Colors.blue.shade50, Colors.white],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: gradientColors,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Center(
+              child: AppTitle(
+                'Authentication',
+                variant: AppTitleVariant.headline,
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Center(child: AppTitle("Authentication")),
-                const SizedBox(height: 20),
-
-                // Login/Logout Button
-                if (!_isLoggedIn)
-                  AppElevatedButton(
-                    isLoading: model.state == ViewState.Loading,
-                    onPressed: () {
-                      _toggleLoginStatus();
-                    },
-                    title: "Login",
-                  )
-                else
-                  ElevatedButton(
-                    onPressed: () {
-                      _toggleLoginStatus();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text(
-                      "Logout",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-
-                const SizedBox(height: 20),
-
-                // Theme Toggle Button (only show when logged in)
-                if (_isLoggedIn)
-                  AppElevatedButton(
-                    isLoading: model.state == ViewState.Loading,
-                    onPressed: () async {
-                      final themeType =
-                          model.userPreferences.themeType == ThemeType.light
-                              ? ThemeType.dark
-                              : ThemeType.light;
-                      final newPrefs = UserPreferencesEntity(
-                        username: "1",
-                        name: "Khursheed",
-                        surename: "Gaddi",
-                        themeType: themeType,
-                        languageType: LanguageType.english,
-                        currency: "inr",
-                        themeColor: "red",
-                      );
-
-                      "Current: ${model.userPreferences.themeType} | $themeType"
-                          .log();
-                      await model.updatePreferences(newPrefs);
-                    },
-                    title: "Toggle Theme",
-                  ),
-
-                const SizedBox(height: 20),
-
-                // Status Text
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: isDark
-                          ? Colors.white.withOpacity(0.2)
-                          : Colors.blue.withOpacity(0.3),
-                    ),
-                  ),
-                  child: Text(
-                    _isLoggedIn
-                        ? "You are logged in"
-                        : "Please login to continue",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? Colors.white : Colors.blue.shade700,
-                    ),
+            const SizedBox(height: AppSpace.md),
+            AppButton(
+              isLoading: isBusy,
+              onPressed: () {
+                ref.read(demoGallerySignedInProvider.notifier).state = true;
+              },
+              label: 'Login',
+            ),
+            const SizedBox(height: AppSpace.md),
+            AppButton(
+              onPressed: () {
+                ref.read(appPreferencesViewModelProvider).toggleThemeType();
+              },
+              label: 'Toggle theme',
+              variant: AppButtonVariant.outlined,
+              expandWidth: false,
+            ),
+            const SizedBox(height: AppSpace.md),
+            Padding(
+              padding: appSymmetricPadding(horizontal: AppSpace.lg, vertical: AppSpace.sm),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: scheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                  border: Border.all(
+                    color: scheme.outlineVariant.withValues(alpha: AppAlpha.borderMedium),
                   ),
                 ),
-              ],
+                child: Padding(
+                  padding: appSymmetricPadding(horizontal: AppSpace.md, vertical: AppSpace.sm),
+                  child: AppTitle(
+                    'Sign in to open the widget gallery demo.',
+                    textAlign: TextAlign.center,
+                    variant: AppTitleVariant.body,
+                    color: scheme.onSurface,
+                  ),
+                ),
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }

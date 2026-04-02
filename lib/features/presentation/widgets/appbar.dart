@@ -1,25 +1,21 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_navigation_bar.dart';
 
+export 'package:flutter_riverpod_base/core/design/widgets/app_navigation_bar.dart';
+
+@Deprecated('Use appNavigationAppBar')
 PreferredSizeWidget customAppBar(
   BuildContext context, {
-  final String? title,
-  final bool? isCenter,
-  final Color? iconColor,
-  final Color? textColor,
-  final List<Widget>? actions,
+  String? title,
+  bool? isCenter,
+  Color? iconColor,
+  Color? textColor,
+  List<Widget>? actions,
 }) {
-  return AppBar(
-    elevation: 0.0,
-    title: Text(title ?? ""),
-    centerTitle: isCenter,
+  return appNavigationAppBar(
+    context,
+    title: title,
+    centerTitle: isCenter ?? true,
     actions: actions,
-    leading: IconButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      icon: const Icon(FontAwesomeIcons.arrowLeft, size: 18),
-    ),
-    backgroundColor: Theme.of(context).canvasColor,
-    iconTheme: IconThemeData(color: Theme.of(context).disabledColor),
   );
 }

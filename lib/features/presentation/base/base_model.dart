@@ -1,4 +1,4 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// An abstract class that serves as the base for ViewModel classes.
 ///
@@ -37,6 +37,15 @@ abstract class BaseModel extends ChangeNotifier {
   void setViewState(ViewState viewState) {
     _state = viewState;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    try {
+      disposeModel();
+    } finally {
+      super.dispose();
+    }
   }
 
   /// Abstract method to dispose of the ViewModel.

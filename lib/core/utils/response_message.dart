@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// The `FunctionalResponse` class provides static methods to handle success and failure responses using
 /// the `Either` type.

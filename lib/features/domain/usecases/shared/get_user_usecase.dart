@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// The `GetLocalUserUsecase` class is a Dart class that represents a use case for retrieving a local
 /// user from an authentication repository.

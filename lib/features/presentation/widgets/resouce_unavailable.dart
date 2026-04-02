@@ -1,10 +1,8 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_empty_state.dart';
 
+@Deprecated('Use AppEmptyState')
 class ResourceNotFound extends StatelessWidget {
-  final String title;
-  final IconData? icon;
-  final Color? textColor;
-  final double iconSize;
   const ResourceNotFound({
     super.key,
     required this.title,
@@ -13,34 +11,18 @@ class ResourceNotFound extends StatelessWidget {
     this.textColor,
   });
 
+  final String title;
+  final IconData? icon;
+  final double iconSize;
+  final Color? textColor;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null)
-            Icon(
-              icon ?? Icons.info,
-              size: iconSize,
-              color: Theme.of(context).colorScheme.error.withOpacity(0.7),
-            ),
-          const SizedBox(height: 5),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color:
-                  textColor ??
-                  Theme.of(context).colorScheme.error.withOpacity(1),
-            ),
-          ),
-        ],
-      ),
+    return AppEmptyState(
+      title: title,
+      icon: icon ?? Icons.info_outline_rounded,
+      iconSize: iconSize,
+      isErrorStyle: true,
     );
   }
 }

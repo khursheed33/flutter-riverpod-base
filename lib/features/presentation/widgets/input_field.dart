@@ -1,5 +1,9 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_text_field.dart';
+import 'package:flutter_riverpod_base/features/presentation/widgets/app_title.dart';
 
+@Deprecated('Prefer AppTextField')
 class AppInputForm extends StatelessWidget {
   const AppInputForm({
     super.key,
@@ -25,6 +29,7 @@ class AppInputForm extends StatelessWidget {
     this.validator,
     this.textAlign,
   });
+
   final int? maxLines;
   final bool obscured;
   final int? minLines;
@@ -42,125 +47,67 @@ class AppInputForm extends StatelessWidget {
   final TextInputType? inputType;
   final TextInputAction? inputAction;
   final TextEditingController? controller;
-  final Function(String)? onChangeHandler;
+  final ValueChanged<String>? onChangeHandler;
   final List<TextInputFormatter>? formatter;
-  final String? Function(String?)? validator;
-  final Function()? passwordVisiblityHandler;
+  final FormFieldValidator<String>? validator;
+  final VoidCallback? passwordVisiblityHandler;
 
   @override
   Widget build(BuildContext context) {
+    final field = AppTextField(
+      controller: controller,
+      initialValue: initialValue,
+      label: inputLabel,
+      hint: hintText,
+      prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+      suffixIcon: isPasswordVisible == null
+          ? null
+          : IconButton(
+              onPressed: passwordVisiblityHandler,
+              icon: Icon(
+                isPasswordVisible! ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+              ),
+            ),
+      obscureText: obscured,
+      readOnly: isDisabled ?? false,
+      enabled: !(isDisabled ?? false),
+      keyboardType: inputType,
+      textInputAction: inputAction,
+      onChanged: onChangeHandler,
+      validator: validator,
+      inputFormatters: formatter,
+      maxLines: maxLines ?? 1,
+      minLines: minLines,
+      maxLength: maxLength,
+    );
+
+    if (inputLabel == null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+        child: field,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-      child: inputLabel == null
-          ? _inputField(context)
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: textAlign == null
-                  ? CrossAxisAlignment.start
-                  : textAlign == TextAlign.right
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 4,
-                  ),
-                  child: Text(
-                    "$inputLabel",
-                    textAlign: textAlign,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).disabledColor.withOpacity(0.6),
-                    ),
-                  ),
-                ),
-                _inputField(context),
-              ],
+      child: Column(
+        crossAxisAlignment: textAlign == TextAlign.right
+            ? CrossAxisAlignment.end
+            : textAlign == TextAlign.center
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 6),
+            child: AppTitle(
+              inputLabel!,
+              fontSize: 14,
+              variant: AppTitleVariant.label,
+              textAlign: textAlign,
             ),
-    );
-  }
-
-  TextFormField _inputField(BuildContext context) {
-    return TextFormField(
-      cursorWidth: 2.5,
-      validator: validator,
-      maxLength: maxLength,
-      obscureText: obscured,
-      controller: controller,
-      maxLines: minLines ?? 1,
-      minLines: minLines ?? 1,
-      keyboardType: inputType,
-      initialValue: initialValue,
-      inputFormatters: formatter,
-      onChanged: onChangeHandler,
-      readOnly: isDisabled ?? false,
-      textAlign: textAlign ?? TextAlign.left,
-      textInputAction: inputAction ?? TextInputAction.next,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      style: TextStyle(
-        fontWeight: fontWeight ?? FontWeight.normal,
-        fontSize: fontSize,
-        color: Theme.of(context).disabledColor.withOpacity(0.6),
-      ),
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(
-          left: 6,
-          bottom: 8,
-          top: 8,
-          right: 2,
-        ),
-        prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
-        suffixIcon: isPasswordVisible == null
-            ? null
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: InkWell(
-                  onTap: passwordVisiblityHandler,
-                  child: Icon(
-                    isPasswordVisible!
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                  ),
-                ),
-              ),
-        counterText: '',
-        hintText: hintText ?? "",
-        hintStyle: TextStyle(
-          color: Theme.of(context).disabledColor,
-          fontWeight: FontWeight.normal,
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: Theme.of(context).primaryColor,
-            width: 2,
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: Theme.of(context).canvasColor,
-            width: 1,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: Theme.of(context).primaryColor,
-            width: 2,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-            width: 2,
-          ),
-        ),
-        disabledBorder: InputBorder.none,
-        filled: true,
-        fillColor: fillColor ?? Theme.of(context).dividerColor,
+          field,
+        ],
       ),
     );
   }

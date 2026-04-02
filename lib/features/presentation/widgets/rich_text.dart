@@ -1,16 +1,8 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_key_value_line.dart';
 
+@Deprecated('Use AppKeyValueLine')
 class AppRichText extends StatelessWidget {
-  final String? label;
-  final String value;
-  final Color? labelColor;
-  final Color? valueColor;
-  final double? labelSize;
-  final double? valueSize;
-  final List<TextSpan>? postFixText;
-  final FontWeight? labelFontWeight;
-  final FontWeight? valueFontWeight;
-
   const AppRichText({
     super.key,
     required this.value,
@@ -24,32 +16,32 @@ class AppRichText extends StatelessWidget {
     this.valueFontWeight,
   });
 
+  final String? label;
+  final String value;
+  final Color? labelColor;
+  final Color? valueColor;
+  final double? labelSize;
+  final double? valueSize;
+  final List<TextSpan>? postFixText;
+  final FontWeight? labelFontWeight;
+  final FontWeight? valueFontWeight;
+
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        children: [
-          if (label != null)
-            TextSpan(
-              text: label,
-              style: TextStyle(
-                fontSize: labelSize ?? 14,
-                fontWeight: labelFontWeight ?? FontWeight.normal,
-                color: labelColor,
-              ),
-            ),
-          if (label != null) const TextSpan(text: " "),
-          TextSpan(
-            text: value,
-            style: TextStyle(
-              fontSize: valueSize ?? 14,
-              fontWeight: valueFontWeight ?? FontWeight.bold,
-              color: valueColor,
-            ),
-          ),
-          if (postFixText != null) ...postFixText!,
-        ],
+    return AppKeyValueLine(
+      label: label,
+      value: value,
+      labelStyle: TextStyle(
+        fontSize: labelSize ?? 14,
+        fontWeight: labelFontWeight ?? FontWeight.normal,
+        color: labelColor,
       ),
+      valueStyle: TextStyle(
+        fontSize: valueSize ?? 14,
+        fontWeight: valueFontWeight ?? FontWeight.bold,
+        color: valueColor,
+      ),
+      trailingSpans: postFixText,
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 abstract class AuthenticationRemoteDatasource {
   /// Get current user token from the local storage.

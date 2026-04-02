@@ -1,5 +1,5 @@
-import 'package:flutter_provider_base/features/data/models/preferences/user_preferences_model.dart';
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/features/data/models/preferences/user_preferences_model.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 class UserPreferencesRemoteDatasourceImpl
     implements UserPreferenceRemoteDatasource {

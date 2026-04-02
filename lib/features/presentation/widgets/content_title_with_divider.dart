@@ -1,23 +1,22 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_section_header.dart';
 
+@Deprecated('Use AppSectionHeader')
 class MMContentTitleWitDivider extends StatelessWidget {
-  final String title;
-  final double? leftPadding;
   const MMContentTitleWitDivider({
     super.key,
     required this.title,
     this.leftPadding,
   });
 
+  final String title;
+  final double? leftPadding;
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(width: leftPadding ?? 10),
-        Flexible(child: AppTitle(title, fontSize: 16)),
-        const SizedBox(width: 8),
-        const Flexible(child: Divider()),
-      ],
+    return AppSectionHeader(
+      title: title,
+      leadingPadding: leftPadding ?? 10,
     );
   }
 }

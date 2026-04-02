@@ -1,4 +1,4 @@
-package com.genicwave.flutter_provider_base
+package com.genicwave.flutter_riverpod_base
 
 import io.flutter.embedding.android.FlutterActivity
 

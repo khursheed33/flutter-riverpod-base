@@ -1,21 +1,8 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod_base/core/design/widgets/app_button.dart';
 
+@Deprecated('Prefer AppButton from package:flutter_riverpod_base/core/design/design.dart')
 class AppElevatedButton extends StatelessWidget {
-  final Color? color;
-  final String title;
-  final double? radius;
-  final IconData? icon;
-  final bool? iconRight;
-  final bool isLoading;
-  final bool darkBorder;
-  final double? iconSize;
-  final Color? textColor;
-  final double elevation;
-  final double? fontSize;
-  final bool lightBorder;
-  final Color? borderColor;
-  final FontWeight? fontWeight;
-  final Function() onPressed;
   const AppElevatedButton({
     super.key,
     this.icon,
@@ -35,85 +22,34 @@ class AppElevatedButton extends StatelessWidget {
     required this.onPressed,
   });
 
+  final Color? color;
+  final String title;
+  final double? radius;
+  final IconData? icon;
+  final bool? iconRight;
+  final bool isLoading;
+  final bool darkBorder;
+  final double? iconSize;
+  final Color? textColor;
+  final double elevation;
+  final double? fontSize;
+  final bool lightBorder;
+  final Color? borderColor;
+  final FontWeight? fontWeight;
+  final VoidCallback onPressed;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width,
-      child: MaterialButton(
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        onPressed: () {
-          if (isLoading) return;
-          onPressed();
-        },
-        elevation: elevation,
-        color: isLoading
-            ? Theme.of(context).disabledColor
-            : color ?? Theme.of(context).primaryColor,
-        shape: RoundedRectangleBorder(
-          side: (darkBorder || lightBorder)
-              ? BorderSide(
-                  width: 2,
-                  color: darkBorder
-                      ? borderColor ?? Theme.of(context).disabledColor
-                      : Theme.of(context).canvasColor.withOpacity(0.8),
-                )
-              : BorderSide.none,
-          borderRadius: BorderRadius.circular(radius ?? 6),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null && !isLoading && iconRight == false)
-              Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Icon(
-                  icon,
-                  color: textColor ?? Theme.of(context).canvasColor,
-                  size: iconSize ?? (fontSize != null ? fontSize! + 5.0 : 20),
-                ),
-              ),
-            if (isLoading)
-              Container(
-                height: 30,
-                width: 50,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 5,
-                  horizontal: 15,
-                ),
-                child: Center(
-                  child: CircularProgressIndicator.adaptive(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).canvasColor,
-                    ),
-                  ),
-                ),
-              ),
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: fontWeight,
-                fontSize: fontSize ?? 18,
-                color: textColor ?? Theme.of(context).canvasColor,
-              ),
-            ),
-            if (icon != null && !isLoading && iconRight == true)
-              const SizedBox(width: 10),
-            if (icon != null && !isLoading && iconRight == true)
-              Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Icon(
-                  icon,
-                  color: textColor ?? Theme.of(context).canvasColor,
-                  size: iconSize ?? (fontSize != null ? fontSize! + 5.0 : 20),
-                ),
-              ),
-          ],
-        ),
-      ),
+    return AppButton(
+      label: title,
+      onPressed: onPressed,
+      isLoading: isLoading,
+      icon: icon != null && iconRight != true ? icon : null,
+      iconAfter: icon != null && iconRight == true ? icon : null,
+      variant: darkBorder || lightBorder
+          ? AppButtonVariant.outlined
+          : AppButtonVariant.filled,
+      expandWidth: true,
     );
   }
 }

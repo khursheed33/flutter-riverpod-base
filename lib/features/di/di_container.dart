@@ -1,16 +1,19 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+/// Service locator for **services** (Dio, repos, use cases). Do not register app-wide [ChangeNotifier]s here;
+/// those belong in Riverpod (`app/providers/app_providers.dart` + `*_state_provider.dart`).
+///
+/// **Add a feature:** register new repos / data sources / use cases in the `Di*` classes.
+/// **Remove a feature:** delete its registrations and files, then remove the Riverpod provider export.
 final GetIt locator = GetIt.instance;
 late SharedPreferences preferences;
 
 Future<void> initializeHive() async {
-  final appDocumentsDirectory = await getSupportDir();
-  // Provide the path to store the Hive boxes (data)
-  Hive.init(appDocumentsDirectory);
-  // Open Hive Box
+  await Hive.initFlutter();
   await Hive.openBox(HiveCollections.localDB);
-  "Hive Box: initialized at: $appDocumentsDirectory".log();
+  'Hive Box: initialized (hive_flutter — mobile, desktop, web)'.log();
 }
 
 Future<SharedPreferences> initializeSharedPreferences() async {
@@ -23,8 +26,7 @@ Future<void> initializeDependencies() async {
   await initializeHive();
 
   // ------------------------------------------------------
-  // ::::::: VIEWMODELS/PROVIDERS/CONTROLLERS :::::::::::::
-  DiViewModels(locator: locator);
+  // Presentation state: Riverpod providers (see app/providers/app_providers.dart).
   //:::::::::::::::: USECASES :::::::::::::::::::::::::::::
   DiUsecases(locator: locator);
   //::::::::::::::: DATA SOURCES ::::::::::::::::::::::::::

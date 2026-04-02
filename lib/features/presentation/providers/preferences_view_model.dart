@@ -1,6 +1,6 @@
 // ignore_for_file: unused_field
 
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 class AppPreferencesViewModel extends BaseModel {
   final GetUserPreferencesUsecase _getUserPreferencesUsecase;
@@ -65,6 +65,22 @@ class AppPreferencesViewModel extends BaseModel {
     setViewState(ViewState.Loading);
     setUserPreferences(newPrefs);
     setViewState(ViewState.Done);
+  }
+
+  /// Switches light/dark for the running app (same fields as current prefs).
+  void toggleThemeType() {
+    final next = _userPreferences.themeType == ThemeType.light
+        ? ThemeType.dark
+        : ThemeType.light;
+    setUserPreferences(UserPreferencesEntity(
+      username: _userPreferences.username,
+      name: _userPreferences.name,
+      surename: _userPreferences.surename,
+      themeType: next,
+      languageType: _userPreferences.languageType,
+      currency: _userPreferences.currency,
+      themeColor: _userPreferences.themeColor,
+    ));
   }
 
   @override

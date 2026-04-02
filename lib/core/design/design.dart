@@ -1,0 +1,32 @@
+// Design system: tokens, theme, and reusable `app_*` widgets.
+
+export 'package:flutter_riverpod_base/core/design/app_text_overrides.dart';
+export 'package:flutter_riverpod_base/core/design/app_theme.dart';
+export 'package:flutter_riverpod_base/core/design/app_theme_context.dart';
+export 'package:flutter_riverpod_base/core/design/app_tokens.dart';
+export 'package:flutter_riverpod_base/core/design/app_typography_scale.dart';
+export 'package:flutter_riverpod_base/core/design/app_ui_dimensions.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_avatar.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_back_button.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_badge.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_button.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_card.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_date_picker_field.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_dialog.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_dropdown_sheet_field.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_empty_state.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_filter_chip.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_hero_icon_header.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_icon_button.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_key_value_line.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_navigation_bar.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_offline_retry.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_primary_fab.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_progress.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_section_header.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_snackbar.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_surface.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_svg_banner.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_text_field.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_text_icon_button.dart';
+export 'package:flutter_riverpod_base/core/design/widgets/app_title_banner.dart';

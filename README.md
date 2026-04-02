@@ -1,16 +1,14 @@
-# flutter_provider_base
+# flutter_riverpod_base
 
-A new Flutter project.
+Flutter starter app using **Riverpod** (`flutter_riverpod`) for state management, with a small design system under `lib/core/design/`.
+
+The Dart package name is `flutter_riverpod_base` (aligned with Riverpod; the legacy `provider` package is not used).
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For Flutter help, see the [online documentation](https://docs.flutter.dev/).

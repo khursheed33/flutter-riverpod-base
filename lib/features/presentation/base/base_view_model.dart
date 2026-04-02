@@ -1,6 +1,9 @@
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// A generic StatefulWidget that serves as the base for building views with state management support.
+///
+/// The view **owns** the [BaseModel]: [dispose] calls [ChangeNotifier.dispose]. Register [VM] in GetIt with
+/// [GetIt.registerFactory] (not a singleton). For app-wide state, use Riverpod instead of [BaseView].
 ///
 /// The `BaseView` widget takes a generic type parameter `VM` which must extend `BaseModel`. This `BaseModel` class
 /// represents the ViewModel for the view. It holds the app's state and business logic.
@@ -13,7 +16,7 @@ import 'package:flutter_provider_base/index.dart';
 /// ```dart
 /// BaseView<CounterModel>(
 ///   onModelReady: (model) => model.init(), // Optional, called when the ViewModel is created and ready.
-///   onModelDispose: (model) => model.dispose(), // Optional, called when the ViewModel is about to be disposed.
+///   onModelDispose: (model) { }, // Optional: extra cleanup before [ChangeNotifier.dispose] (e.g. cancel streams).
 ///   builder: (context, model, child) => Text(model.counter.toString()),
 /// )
 /// ```
@@ -68,20 +71,18 @@ class _BaseViewState<VM extends BaseModel> extends State<BaseView<VM>>
 
   @override
   void dispose() {
+    widget.onModelDispose?.call(_model);
+    _model.dispose();
     super.dispose();
-
-    // If the `onModelDispose` callback is provided, call it passing the ViewModel instance.
-    if (widget.onModelDispose != null) {
-      widget.onModelDispose!(_model);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Use the ChangeNotifierProvider to expose the ViewModel to the view and its descendants.
-    return ChangeNotifierProvider(
-      create: (_) => _model,
-      child: Consumer<VM>(builder: widget.builder),
+    return ListenableBuilder(
+      listenable: _model,
+      builder: (context, _) {
+        return widget.builder(context, _model, null);
+      },
     );
   }
 }

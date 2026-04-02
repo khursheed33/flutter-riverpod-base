@@ -1,5 +1,7 @@
-import 'package:flutter_provider_base/features/data/sources/remote/preferences/user_preferences_remote_ds_impl.dart';
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/features/data/sources/local/managed_users/managed_users_local_datasource.dart';
+import 'package:flutter_riverpod_base/features/data/sources/local/managed_users/managed_users_local_datasource_impl.dart';
+import 'package:flutter_riverpod_base/features/data/sources/remote/preferences/user_preferences_remote_ds_impl.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 /// `DiDatasources` class responsible to register and inject all types of datasources and their implementations.
 class DiDatasources {
@@ -20,6 +22,9 @@ class DiDatasources {
         hiveBox: locator.call(),
         sharedPreferences: locator.call(),
       ),
+    );
+    locator.registerLazySingleton<ManagedUsersLocalDatasource>(
+      () => ManagedUsersLocalDatasourceImpl(hiveBox: locator.call()),
     );
   }
 }

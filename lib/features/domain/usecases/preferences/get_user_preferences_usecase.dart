@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_provider_base/index.dart';
+import 'package:flutter_riverpod_base/index.dart';
 
 class GetUserPreferencesUsecase
     extends BaseUsecase<UserPreferencesEntity?, String> {
